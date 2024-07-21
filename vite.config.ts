@@ -8,9 +8,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
-        nested: resolve(__dirname, "scheme.html")
+        nested: resolve(__dirname, "sketch.html")
       },
     },
   },
-  plugins: [svelte(), wasmPack([], [])],
+  plugins: [svelte(), wasmPack([], ["route-snapper"])],
 });

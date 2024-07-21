@@ -33,6 +33,10 @@
       e.detail.features[0].properties!.LAD23NM
     }`;
   }
+
+  let bounds = window.location.hash
+    ? undefined
+    : [-8.943, 54.631, -0.901, 59.489];
 </script>
 
 <div class="govuk-grid-row">
@@ -44,6 +48,7 @@
     <div id="map">
       <MapLibre
         style="https://api.maptiler.com/maps/uk-openzoomstack-light/style.json?key=MZEJTanw3WpxRvt7qDfo"
+        {bounds}
         standardControls
         hash
         on:error={(e) => {
