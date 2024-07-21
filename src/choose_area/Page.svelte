@@ -3,7 +3,7 @@
   // @ts-expect-error no declarations
   import { initAll } from "govuk-frontend";
   import { onMount } from "svelte";
-  import { DefaultButton } from "govuk-svelte";
+  import { DefaultButton, ErrorMessage } from "govuk-svelte";
   import {
     MapLibre,
     FillLayer,
@@ -38,11 +38,14 @@
   let bounds = window.location.hash
     ? undefined
     : ([-8.943, 54.631, -0.901, 59.489] as LngLatBoundsLike);
+  let params = new URLSearchParams(window.location.search);
+  let errorMessage = params.get("error") || "";
 </script>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-half left">
     <p>TODO, insert instructions / text</p>
+    <ErrorMessage {errorMessage} />
     <DefaultButton on:click={() => window.alert("TODO")}>Start</DefaultButton>
   </div>
   <div class="govuk-grid-column-one-half">
