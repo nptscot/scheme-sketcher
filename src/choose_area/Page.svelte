@@ -14,6 +14,7 @@
     type LayerClickInfo,
   } from "svelte-maplibre";
   import boundariesUrl from "../../assets/boundaries.geojson?url";
+  import type { LngLatBoundsLike } from "maplibre-gl";
 
   let gj = {
     type: "FeatureCollection" as const,
@@ -36,7 +37,7 @@
 
   let bounds = window.location.hash
     ? undefined
-    : [-8.943, 54.631, -0.901, 59.489];
+    : ([-8.943, 54.631, -0.901, 59.489] as LngLatBoundsLike);
 </script>
 
 <div class="govuk-grid-row">

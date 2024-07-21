@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../style/main.css";
   import { MapLibre } from "svelte-maplibre";
-  import { type Config, map } from "scheme-sketcher-lib/config";
+  import { map } from "scheme-sketcher-lib/config";
   import {
     ImageLayer,
     InterventionLayer,
