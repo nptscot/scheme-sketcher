@@ -1,2 +1,5 @@
 *.swp
 node_modules/
+public/assets
+src/style/main.css
+src/style/main.css.map
