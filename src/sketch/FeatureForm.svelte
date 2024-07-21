@@ -26,15 +26,18 @@
 />
 
 <Radio
-  legend="Likelihood of construction"
+  legend="Infrastructure type"
   choices={[
-    ["moonshot", "Moonshot"],
-    ["maybe", "Maybe?"],
-    ["definitely", "Definitely!"],
+    ["mixed-traffic-street", "Mixed Traffic Street"],
+    ["detached-cycle-track", "Detached or Remote Cycle Track"],
+    ["carriageway-cycle-track", "Cycle Track at Carriageway Level"],
+    ["stepped-cycle-track", "Stepped or Footway Level Cycle Track"],
+    ["light-segregation", "Light Segregation"],
+    ["cycle-lane", "Cycle Lane"],
+    ["", "Unknown"],
   ]}
-  inlineSmall
   required
-  bind:value={props.likelihood}
+  bind:value={props.infrastructure_type}
 />
 
 <TextArea label="Description" bind:value={props.description} />

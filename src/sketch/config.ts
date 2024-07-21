@@ -1,11 +1,11 @@
 import { type Config } from "scheme-sketcher-lib/config";
 import type { NptFeature, NptScheme } from "./types";
-import type { SchemeData } from "scheme-sketcher-lib/draw/types";
+import type { FeatureWithID, SchemeData } from "scheme-sketcher-lib/draw/types";
 import FeatureForm from "./FeatureForm.svelte";
 import SchemeForm from "./SchemeForm.svelte";
 
 export let cfg: Config<NptFeature, NptScheme> = {
-  interventionName: (f) => `some ${f.geometry.type} feature`,
+  interventionName,
 
   schemeName: (s) => s.scheme_name,
 
@@ -17,22 +17,28 @@ export let cfg: Config<NptFeature, NptScheme> = {
     return s;
   },
 
+  // TODO Required type not set
   interventionWarning: (feature) => null,
 
   editFeatureForm: FeatureForm,
 
   editSchemeForm: SchemeForm,
 
-  newPointFeature: (f) => {},
-  newPolygonFeature: (f) => {},
-  newLineStringFeature: (f) => {},
+  newPointFeature: (f) => {
+    f.properties.infrastructure_type = "";
+  },
+  newPolygonFeature: (f) => {
+    f.properties.infrastructure_type = "";
+  },
+  newLineStringFeature: (f) => {
+    f.properties.infrastructure_type = "";
+  },
 
   updateFeature: (destination, source) => {},
 
   // TODO Switch to another
   maptilerApiKey: "MZEJTanw3WpxRvt7qDfo",
 
-  // TODO Fix this
   getStreetViewRoadLayerNames: (map) =>
     map
       .getStyle()
@@ -78,3 +84,16 @@ export let cfg: Config<NptFeature, NptScheme> = {
     "georeferenced-image",
   ],
 };
+
+function interventionName(feature: FeatureWithID<NptFeature>): string {
+  if (feature.properties.name) {
+    return feature.properties.name;
+  }
+  if (feature.geometry.type == "Point") {
+    return "untitled point";
+  } else if (feature.geometry.type == "LineString") {
+    return "untitled route";
+  } else {
+    return "untitled area";
+  }
+}

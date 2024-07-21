@@ -1,7 +1,15 @@
 export interface NptFeature {
   name: string;
   description: string;
-  likelihood: "moonshot" | "maybe" | "definitely" | "";
+  // From https://nptscot.github.io/manual/#cyclingbydesigncompliance
+  infrastructure_type:
+    | "mixed-traffic-street"
+    | "detached-cycle-track"
+    | "carriageway-cycle-track"
+    | "stepped-cycle-track"
+    | "light-segregation"
+    | "cycle-lane"
+    | "";
 }
 
 export interface NptScheme {
