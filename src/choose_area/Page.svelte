@@ -3,7 +3,7 @@
   // @ts-expect-error no declarations
   import { initAll } from "govuk-frontend";
   import { onMount } from "svelte";
-  import { DefaultButton, ErrorMessage } from "govuk-svelte";
+  import { ErrorMessage } from "govuk-svelte";
   import {
     MapLibre,
     FillLayer,
@@ -15,11 +15,13 @@
   } from "svelte-maplibre";
   import boundariesUrl from "../../assets/boundaries.geojson?url";
   import type { LngLatBoundsLike } from "maplibre-gl";
+  import type { Polygon, MultiPolygon, FeatureCollection } from "geojson";
 
-  let gj = {
+  let gj: FeatureCollection<Polygon | MultiPolygon, { LAD23NM: string }> = {
     type: "FeatureCollection" as const,
     features: [],
   };
+  let boundaryNames: string[] = [];
 
   onMount(async () => {
     // For govuk components. Must happen here.
@@ -27,6 +29,9 @@
 
     let resp = await fetch(boundariesUrl);
     gj = await resp.json();
+
+    boundaryNames = gj.features.map((f) => f.properties.LAD23NM);
+    boundaryNames.sort();
   });
 
   function onClick(e: CustomEvent<LayerClickInfo>) {
@@ -46,7 +51,13 @@
   <div class="govuk-grid-column-one-half left">
     <p>TODO, insert instructions / text</p>
     <ErrorMessage {errorMessage} />
-    <DefaultButton on:click={() => window.alert("TODO")}>Start</DefaultButton>
+
+    <p>Choose a boundary below or on the map to begin sketching:</p>
+    <ul>
+      {#each boundaryNames as name}
+        <li><a href="sketch.html?boundary={name}">{name}</a></li>
+      {/each}
+    </ul>
   </div>
   <div class="govuk-grid-column-one-half">
     <div id="map">

@@ -19,6 +19,7 @@
   // @ts-expect-error no declarations
   import { initAll } from "govuk-frontend";
   import { cfg } from "./config";
+  import type { Polygon, MultiPolygon, FeatureCollection } from "geojson";
 
   let params = new URLSearchParams(window.location.search);
   // TODO Add validation and some kind of error page
@@ -26,14 +27,18 @@
 
   let fitBoundsAtStart = !window.location.hash;
 
-  let boundaryGeojson = { type: "FeatureCollection" as const, features: [] };
+  let boundaryGeojson: FeatureCollection<
+    Polygon | MultiPolygon,
+    { LAD23NM: string }
+  > = { type: "FeatureCollection", features: [] };
 
   onMount(async () => {
     // For govuk components. Must happen here.
     initAll();
 
     let resp = await fetch(boundariesUrl);
-    let gj = await resp.json();
+    let gj: FeatureCollection<Polygon | MultiPolygon, { LAD23NM: string }> =
+      await resp.json();
     gj.features = gj.features.filter(
       (f) => f.properties.LAD23NM == boundaryName,
     );
