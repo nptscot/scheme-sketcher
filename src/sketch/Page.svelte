@@ -24,6 +24,8 @@
   // TODO Add validation and some kind of error page
   let boundaryName: string = params.get("boundary")!;
 
+  let fitBoundsAtStart = !window.location.hash;
+
   let boundaryGeojson = { type: "FeatureCollection" as const, features: [] };
 
   onMount(async () => {
@@ -64,13 +66,14 @@
     <MapLibre
       style="https://api.maptiler.com/maps/uk-openzoomstack-light/style.json?key={cfg.maptilerApiKey}"
       standardControls
+      hash
       on:error={(e) => {
         // @ts-expect-error Not exported
         console.log(e.detail.error);
       }}
       bind:map={$map}
     >
-      <BoundaryLayer {cfg} {boundaryGeojson} fitBoundsAtStart />
+      <BoundaryLayer {cfg} {boundaryGeojson} {fitBoundsAtStart} />
       <InterventionLayer {cfg} {gjSchemes} />
       <ImageLayer {cfg} />
       {#if $mode.mode == "list"}
