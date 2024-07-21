@@ -82,7 +82,7 @@
             hoverCursor="pointer"
             on:click={onClick}
           >
-            <Popup let:features>
+            <Popup let:features openOn="hover">
               {#if features}
                 <p>{features[0].properties.LAD23NM}</p>
               {/if}

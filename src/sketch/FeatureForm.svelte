@@ -10,7 +10,7 @@
   export let id: number;
   export let props: FeatureProps<NptFeature>;
 
-  // Hide svelte-check warning
+  // @ts-expect-error Hide svelte-check warning
   let _ = id;
 </script>
 
