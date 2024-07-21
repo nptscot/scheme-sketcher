@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "../style/main.css";
   import { MapLibre } from "svelte-maplibre";
   import { type Config, map } from "scheme-sketcher-lib/config";
   import {
@@ -48,6 +49,15 @@
 
 <div style="display: flex; height: 100vh">
   <div class="sidebar">
+    {#if $mode.mode == "list"}
+      <h2>NPT Scheme Sketcher</h2>
+      <p>
+        {boundaryName} (
+        <a href="index.html">Change area</a>
+        )
+      </p>
+    {/if}
+
     <PerModeControls {cfg} {gjSchemes} {routeSnapperUrl} />
   </div>
   <div class="map">
