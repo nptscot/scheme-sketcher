@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TextInput, Radio, Select, TextArea } from "govuk-svelte";
+  import { TextInput, Select, TextArea } from "govuk-svelte";
   import { type Config } from "scheme-sketcher-lib/config";
   import type { FeatureProps, Schemes } from "scheme-sketcher-lib/draw/types";
   import type { Writable } from "svelte/store";
@@ -25,8 +25,8 @@
   bind:value={props.scheme_reference}
 />
 
-<Radio
-  legend="Infrastructure type"
+<Select
+  label="Infrastructure type"
   choices={[
     ["mixed-traffic-street", "Mixed Traffic Street"],
     ["detached-cycle-track", "Detached or Remote Cycle Track"],
@@ -36,7 +36,6 @@
     ["cycle-lane", "Cycle Lane"],
     ["", "Unknown"],
   ]}
-  required
   bind:value={props.infrastructure_type}
 />
 
