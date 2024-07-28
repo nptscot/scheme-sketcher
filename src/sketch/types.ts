@@ -1,3 +1,10 @@
+import type { Schemes } from "scheme-sketcher-lib/draw/types";
+
+export interface State extends Schemes<NptFeature, NptScheme> {
+  // Foreign members
+  boundary: string;
+}
+
 export interface NptFeature {
   name: string;
   description: string;

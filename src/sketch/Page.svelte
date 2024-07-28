@@ -22,6 +22,7 @@
   import type { Polygon, MultiPolygon, FeatureCollection } from "geojson";
   import FileManager from "./FileManager.svelte";
   import { LocalStorageFiles } from "./files";
+  import type { State } from "./types";
 
   let params = new URLSearchParams(window.location.search);
   // TODO Add validation and some kind of error page
@@ -53,17 +54,23 @@
 
   let routeSnapperUrl = `https://atip.uk/npt_tmp/${boundaryName}.bin.gz`;
 
-  let gjSchemes = writable(emptySchemes(cfg));
+  let gjSchemes = writable(emptyState());
   let currentFile = writable("");
 
   let files = new LocalStorageFiles(
-    "npt_ss/",
-    () => emptySchemes(cfg),
+    `npt_ss/${boundaryName}/`,
+    emptyState,
     validate,
     describe,
     gjSchemes,
     currentFile,
   );
+
+  function emptyState(): State {
+    let gj = emptySchemes(cfg) as State;
+    gj.boundary = boundaryName;
+    return gj;
+  }
 </script>
 
 <div style="display: flex; height: 100vh">
@@ -76,7 +83,7 @@
         )
       </p>
 
-      <FileManager {boundaryName} {files} {currentFile} {gjSchemes} />
+      <FileManager {files} {currentFile} {gjSchemes} />
       <hr />
     {/if}
 

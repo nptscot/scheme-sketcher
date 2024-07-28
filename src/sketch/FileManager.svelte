@@ -2,15 +2,13 @@
   import { SecondaryButton } from "govuk-svelte";
   import { Modal } from "scheme-sketcher-lib/common";
   import type { Writable } from "svelte/store";
-  import type { NptFeature, NptScheme } from "./types";
-  import type { Schemes } from "scheme-sketcher-lib/draw/types";
+  import type { State } from "./types";
   import folderUrl from "./files/assets/folder.svg?url";
   import { FileManager, LocalStorageFiles } from "./files";
 
-  export let boundaryName: string;
-  export let files: LocalStorageFiles<Schemes<NptFeature, NptScheme>>;
+  export let files: LocalStorageFiles<State>;
   export let currentFile: Writable<string>;
-  export let gjSchemes: Writable<Schemes<NptFeature, NptScheme>>;
+  export let gjSchemes: Writable<State>;
 
   let open = false;
 </script>

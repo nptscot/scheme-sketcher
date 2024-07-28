@@ -105,7 +105,7 @@ function interventionName(feature: FeatureWithID<NptFeature>): string {
 // These two are for file management
 export function validate(state: Schemes<NptFeature, NptScheme>) {}
 export function describe(state: Schemes<NptFeature, NptScheme>): string {
-  let plural1 = state.features.length > 1 ? "s" : "";
-  let plural2 = Object.keys(state.schemes).length > 1 ? "s" : "";
+  let plural1 = state.features.length == 1 ? "" : "s";
+  let plural2 = Object.keys(state.schemes).length == 1 ? "" : "s";
   return `${state.features.length} intervention${plural1} in ${Object.keys(state.schemes).length} scheme${plural2}`;
 }
