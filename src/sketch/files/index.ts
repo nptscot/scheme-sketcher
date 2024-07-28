@@ -1,3 +1,4 @@
+export { default as ClickableCard } from "./ClickableCard.svelte";
 export { default as FileManager } from "./FileManager.svelte";
 import { get, type Writable } from "svelte/store";
 
@@ -17,6 +18,7 @@ export class LocalStorageFiles<StateType> {
   // The caller should treat this like a singleton and only create once per app lifetime. This constructor has the side-effect of initially loading the last opened file (or starting a new blank file), and setting up store subscriptions to automatically save to local storage.
   constructor(
     prefix: string,
+    initiallyLoadFile: string | null,
     emptyState: () => StateType,
     validate: (state: StateType) => void,
     describe: (state: StateType) => string,
@@ -30,7 +32,7 @@ export class LocalStorageFiles<StateType> {
     this.state = state;
     this.currentFile = currentFile;
 
-    this.initialLoad();
+    this.initialLoad(initiallyLoadFile);
 
     this.state.subscribe((value) => {
       let file = get(this.currentFile);
@@ -112,8 +114,9 @@ export class LocalStorageFiles<StateType> {
     }
   }
 
-  // Initially set the currentFile and state store, based on the last opened file or starting a new one.
-  private initialLoad() {
+  // Initially set the currentFile and state store, based on the provided
+  // string, or the last opened file, or starting a new one.
+  private initialLoad(initiallyLoadFile: string | null) {
     if (typeof window == "undefined") {
       console.log(
         "Running outside of a browser, in test mode -- not loading from local storage",
@@ -121,18 +124,30 @@ export class LocalStorageFiles<StateType> {
       return;
     }
 
-    console.log(`Initial load; trying to open last opened file`);
-    let lastFile = window.localStorage.getItem(this.key("last-opened-file"));
-    if (lastFile) {
+    if (initiallyLoadFile) {
+      console.log(`Initial load; trying to open ${initiallyLoadFile}`);
       try {
-        let x = this.loadFile(lastFile);
-        this.currentFile.set(lastFile);
+        let x = this.loadFile(initiallyLoadFile);
+        this.currentFile.set(initiallyLoadFile);
         this.state.set(x);
         return;
       } catch (error) {
-        window.alert(
-          `The last opened file ${lastFile} has a problem: ${error}`,
-        );
+        window.alert(`Can't open file ${initiallyLoadFile}: ${error}`);
+      }
+    } else {
+      console.log(`Initial load; trying to open last opened file`);
+      let lastFile = window.localStorage.getItem(this.key("last-opened-file"));
+      if (lastFile) {
+        try {
+          let x = this.loadFile(lastFile);
+          this.currentFile.set(lastFile);
+          this.state.set(x);
+          return;
+        } catch (error) {
+          window.alert(
+            `The last opened file ${lastFile} has a problem: ${error}`,
+          );
+        }
       }
     }
 

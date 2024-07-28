@@ -16,6 +16,7 @@
   import boundariesUrl from "../../assets/boundaries.geojson?url";
   import type { LngLatBoundsLike } from "maplibre-gl";
   import type { Polygon, MultiPolygon, FeatureCollection } from "geojson";
+  import ListFiles from "./ListFiles.svelte";
 
   let gj: FeatureCollection<Polygon | MultiPolygon, { LAD23NM: string }> = {
     type: "FeatureCollection" as const,
@@ -58,6 +59,8 @@
         <li><a href="sketch.html?boundary=LAD_{name}">{name}</a></li>
       {/each}
     </ul>
+
+    <ListFiles />
   </div>
   <div class="govuk-grid-column-one-half">
     <div id="map">

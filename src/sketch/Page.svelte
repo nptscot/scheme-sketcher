@@ -46,7 +46,6 @@
       (f) => f.properties.LAD23NM == stripPrefix(boundaryName, "LAD_"),
     );
     if (gj.features.length === 0) {
-      // TODO Make the error page
       window.location.href = `index.html?error=Boundary name not found: ${boundaryName}`;
     }
     boundaryGeojson = gj;
@@ -59,6 +58,7 @@
 
   let files = new LocalStorageFiles(
     `npt_ss/${boundaryName}/`,
+    params.get("file"),
     emptyState,
     validate,
     describe,
