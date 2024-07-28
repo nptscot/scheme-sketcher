@@ -35,7 +35,7 @@
   });
 
   function onClick(e: CustomEvent<LayerClickInfo>) {
-    window.location.href = `sketch.html?boundary=${
+    window.location.href = `sketch.html?boundary=LAD_${
       e.detail.features[0].properties!.LAD23NM
     }`;
   }
@@ -55,7 +55,7 @@
     <p>Choose a boundary below or on the map to begin sketching:</p>
     <ul>
       {#each boundaryNames as name}
-        <li><a href="sketch.html?boundary={name}">{name}</a></li>
+        <li><a href="sketch.html?boundary=LAD_{name}">{name}</a></li>
       {/each}
     </ul>
   </div>

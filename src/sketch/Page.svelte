@@ -43,7 +43,7 @@
     let gj: FeatureCollection<Polygon | MultiPolygon, { LAD23NM: string }> =
       await resp.json();
     gj.features = gj.features.filter(
-      (f) => f.properties.LAD23NM == boundaryName,
+      (f) => f.properties.LAD23NM == stripPrefix(boundaryName, "LAD_"),
     );
     if (gj.features.length === 0) {
       // TODO Make the error page
@@ -52,7 +52,7 @@
     boundaryGeojson = gj;
   });
 
-  let routeSnapperUrl = `https://atip.uk/npt_tmp/${boundaryName}.bin.gz`;
+  let routeSnapperUrl = `https://atip.uk/npt_tmp/${stripPrefix(boundaryName, "LAD_")}.bin.gz`;
 
   let gjSchemes = writable(emptyState());
   let currentFile = writable("");
@@ -70,6 +70,10 @@
     let gj = emptySchemes(cfg) as State;
     gj.boundary = boundaryName;
     return gj;
+  }
+
+  function stripPrefix(value: string, prefix: string): string {
+    return value.startsWith(prefix) ? value.slice(prefix.length) : value;
   }
 </script>
 
