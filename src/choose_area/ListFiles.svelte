@@ -31,15 +31,28 @@
   }
 </script>
 
-{#each files as [boundary, list]}
-  <h2>{boundary}</h2>
-  {#each list as [filename, description]}
-    <ClickableCard
-      name={filename}
-      on:click={() =>
-        (window.location.href = `sketch.html?boundary=${boundary}&file=${filename}`)}
-    >
-      {description}
-    </ClickableCard>
+<div style="columns: 2">
+  {#each files as [boundary, list]}
+    <div class="group">
+      <h2>{boundary}</h2>
+      {#each list as [filename, description]}
+        <ClickableCard
+          name={filename}
+          on:click={() =>
+            (window.location.href = `sketch.html?boundary=${boundary}&file=${filename}`)}
+        >
+          {description}
+        </ClickableCard>
+      {/each}
+    </div>
   {/each}
-{/each}
+</div>
+
+<style>
+  .group {
+    border: 1px solid black;
+    padding: 4px;
+    margin-bottom: 8px;
+    break-inside: avoid-column;
+  }
+</style>

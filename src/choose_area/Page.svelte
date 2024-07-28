@@ -50,15 +50,31 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-half left govuk-prose">
-    <p>TODO, insert instructions / text</p>
+    <h2>NPT Scheme Sketcher</h2>
+    <p>
+      This is an
+      <a href="https://github.com/nptscot/scheme-sketcher" target="_blank">
+        open source project
+      </a>
+      project developed by
+      <a href="https://github.com/dabreegster/" target="_blank">
+        Dustin Carlino
+      </a>
+      .
+    </p>
+
     <ErrorMessage {errorMessage} />
 
     <p>Choose a boundary below or on the map to begin sketching:</p>
-    <ul>
+    <ul style="columns: 3">
       {#each boundaryNames as name}
         <li><a href="sketch.html?boundary=LAD_{name}">{name}</a></li>
       {/each}
     </ul>
+
+    <hr />
+
+    <p>Or continue with a previously opened file:</p>
 
     <ListFiles />
   </div>
@@ -111,7 +127,9 @@
   }
 
   .left {
-    margin: 10px;
+    padding: 30px;
+    height: 100vh;
+    overflow-y: scroll;
   }
 
   #map {
