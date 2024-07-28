@@ -1,6 +1,10 @@
 import { type Config } from "scheme-sketcher-lib/config";
 import type { NptFeature, NptScheme } from "./types";
-import type { FeatureWithID, SchemeData } from "scheme-sketcher-lib/draw/types";
+import type {
+  FeatureWithID,
+  SchemeData,
+  Schemes,
+} from "scheme-sketcher-lib/draw/types";
 import FeatureForm from "./FeatureForm.svelte";
 import SchemeForm from "./SchemeForm.svelte";
 
@@ -96,4 +100,12 @@ function interventionName(feature: FeatureWithID<NptFeature>): string {
   } else {
     return "untitled area";
   }
+}
+
+// These two are for file management
+export function validate(state: Schemes<NptFeature, NptScheme>) {}
+export function describe(state: Schemes<NptFeature, NptScheme>): string {
+  let plural1 = state.features.length > 1 ? "s" : "";
+  let plural2 = Object.keys(state.schemes).length > 1 ? "s" : "";
+  return `${state.features.length} intervention${plural1} in ${Object.keys(state.schemes).length} scheme${plural2}`;
 }

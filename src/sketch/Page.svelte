@@ -18,8 +18,10 @@
   import { onMount } from "svelte";
   // @ts-expect-error no declarations
   import { initAll } from "govuk-frontend";
-  import { cfg } from "./config";
+  import { cfg, validate, describe } from "./config";
   import type { Polygon, MultiPolygon, FeatureCollection } from "geojson";
+  import FileManager from "./FileManager.svelte";
+  import { LocalStorageFiles } from "./files";
 
   let params = new URLSearchParams(window.location.search);
   // TODO Add validation and some kind of error page
@@ -52,6 +54,16 @@
   let routeSnapperUrl = `https://atip.uk/npt_tmp/${boundaryName}.bin.gz`;
 
   let gjSchemes = writable(emptySchemes(cfg));
+  let currentFile = writable("");
+
+  let files = new LocalStorageFiles(
+    "npt_ss/",
+    () => emptySchemes(cfg),
+    validate,
+    describe,
+    gjSchemes,
+    currentFile,
+  );
 </script>
 
 <div style="display: flex; height: 100vh">
@@ -63,6 +75,9 @@
         <a href="index.html">Change area</a>
         )
       </p>
+
+      <FileManager {boundaryName} {files} {currentFile} {gjSchemes} />
+      <hr />
     {/if}
 
     <PerModeControls {cfg} {gjSchemes} {routeSnapperUrl} />
