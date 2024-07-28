@@ -56,15 +56,15 @@
   let gjSchemes = writable(emptyState());
   let currentFile = writable("");
 
-  let files = new LocalStorageFiles(
-    `npt_ss/${boundaryName}/`,
-    params.get("file"),
+  let files = new LocalStorageFiles({
+    prefix: `npt_ss/${boundaryName}/`,
+    initiallyLoadFile: params.get("file"),
     emptyState,
     validate,
     describe,
-    gjSchemes,
+    state: gjSchemes,
     currentFile,
-  );
+  });
 
   function emptyState(): State {
     let gj = emptySchemes(cfg) as State;

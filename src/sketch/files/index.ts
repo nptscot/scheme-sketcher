@@ -15,24 +15,24 @@ export class LocalStorageFiles<StateType> {
   // A key into local storage, excluding prefix
   currentFile: Writable<string>;
 
-  // The caller should treat this like a singleton and only create once per app lifetime. This constructor has the side-effect of initially loading the last opened file (or starting a new blank file), and setting up store subscriptions to automatically save to local storage.
-  constructor(
-    prefix: string,
-    initiallyLoadFile: string | null,
-    emptyState: () => StateType,
-    validate: (state: StateType) => void,
-    describe: (state: StateType) => string,
-    state: Writable<StateType>,
-    currentFile: Writable<string>,
-  ) {
-    this.prefix = prefix;
-    this.emptyState = emptyState;
-    this.validate = validate;
-    this.describe = describe;
-    this.state = state;
-    this.currentFile = currentFile;
+  // The caller should treat this like a singleton and only create once per app lifetime. This constructor has the side-effect of initially loading the specified file or the last opened file or starting a new blank file, and setting up store subscriptions to automatically save to local storage.
+  constructor(opts: {
+    prefix: string;
+    initiallyLoadFile: string | null;
+    emptyState: () => StateType;
+    validate: (state: StateType) => void;
+    describe: (state: StateType) => string;
+    state: Writable<StateType>;
+    currentFile: Writable<string>;
+  }) {
+    this.prefix = opts.prefix;
+    this.emptyState = opts.emptyState;
+    this.validate = opts.validate;
+    this.describe = opts.describe;
+    this.state = opts.state;
+    this.currentFile = opts.currentFile;
 
-    this.initialLoad(initiallyLoadFile);
+    this.initialLoad(opts.initiallyLoadFile);
 
     this.state.subscribe((value) => {
       let file = get(this.currentFile);
