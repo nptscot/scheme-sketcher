@@ -25,7 +25,6 @@
   import type { State } from "./types";
 
   let params = new URLSearchParams(window.location.search);
-  // TODO Add validation and some kind of error page
   let boundaryName: string = params.get("boundary")!;
 
   let fitBoundsAtStart = !window.location.hash;
@@ -78,7 +77,7 @@
 </script>
 
 <div style="display: flex; height: 100vh">
-  <div class="sidebar">
+  <div class="sidebar govuk-prose">
     {#if $mode.mode == "list"}
       <h2>NPT Scheme Sketcher</h2>
       <p>

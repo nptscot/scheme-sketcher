@@ -49,7 +49,7 @@
 </script>
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-one-half left">
+  <div class="govuk-grid-column-one-half left govuk-prose">
     <p>TODO, insert instructions / text</p>
     <ErrorMessage {errorMessage} />
 
