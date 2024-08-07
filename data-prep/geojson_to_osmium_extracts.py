@@ -36,7 +36,7 @@ def main():
         num_batches = 0
 
         for feature in gj["features"]:
-            name = feature["properties"]["LAD23NM"]
+            name = feature["properties"]["kind"] + "_" + feature["properties"]["name"]
 
             with open(f"{name}.geojson", "w") as f:
                 f.write(json.dumps(feature))

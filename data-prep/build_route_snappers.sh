@@ -26,6 +26,8 @@ function split_osm {
         for batch in osmium_cfg_*; do
           time osmium extract -v -c $batch ../scotland-latest.osm.pbf
         done
+
+        cd ..
 }
 
 function build_route_snappers {

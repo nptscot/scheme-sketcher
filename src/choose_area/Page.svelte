@@ -3,7 +3,7 @@
   // @ts-expect-error no declarations
   import { initAll } from "govuk-frontend";
   import { onMount } from "svelte";
-  import { ErrorMessage } from "govuk-svelte";
+  import { ErrorMessage, Radio } from "govuk-svelte";
   import {
     MapLibre,
     FillLayer,
@@ -18,11 +18,16 @@
   import type { Polygon, MultiPolygon, FeatureCollection } from "geojson";
   import ListFiles from "./ListFiles.svelte";
 
-  let gj: FeatureCollection<Polygon | MultiPolygon, { LAD23NM: string }> = {
+  let gj: FeatureCollection<
+    Polygon | MultiPolygon,
+    { kind: "LAD" | "REGION"; name: string }
+  > = {
     type: "FeatureCollection" as const,
     features: [],
   };
-  let boundaryNames: string[] = [];
+  let ladNames: string[] = [];
+  let regionNames: string[] = [];
+  let kind = "LAD";
 
   onMount(async () => {
     // For govuk components. Must happen here.
@@ -31,14 +36,22 @@
     let resp = await fetch(boundariesUrl);
     gj = await resp.json();
 
-    boundaryNames = gj.features.map((f) => f.properties.LAD23NM);
-    boundaryNames.sort();
+    for (let f of gj.features) {
+      if (f.properties.kind == "LAD") {
+        ladNames.push(f.properties.name);
+      } else {
+        regionNames.push(f.properties.name);
+      }
+    }
+    ladNames.sort();
+    regionNames.sort();
+    ladNames = ladNames;
+    regionNames = regionNames;
   });
 
   function onClick(e: CustomEvent<LayerClickInfo>) {
-    window.location.href = `sketch.html?boundary=LAD_${
-      e.detail.features[0].properties!.LAD23NM
-    }`;
+    let props = e.detail.features[0].properties!;
+    window.location.href = `sketch.html?boundary=${props.kind}_${props.name}`;
   }
 
   let bounds = window.location.hash
@@ -65,11 +78,27 @@
 
     <ErrorMessage {errorMessage} />
 
+    <Radio
+      legend="Boundary type"
+      choices={[
+        ["LAD", "Local Authority Districts"],
+        ["REGION", "Regions"],
+      ]}
+      inlineSmall
+      bind:value={kind}
+    />
+
     <p>Choose a boundary below or on the map to begin sketching:</p>
     <ul style="columns: 3">
-      {#each boundaryNames as name}
-        <li><a href="sketch.html?boundary=LAD_{name}">{name}</a></li>
-      {/each}
+      {#if kind == "LAD"}
+        {#each ladNames as name}
+          <li><a href="sketch.html?boundary=LAD_{name}">{name}</a></li>
+        {/each}
+      {:else}
+        {#each regionNames as name}
+          <li><a href="sketch.html?boundary=REGION_{name}">{name}</a></li>
+        {/each}
+      {/if}
     </ul>
 
     <hr />
@@ -92,6 +121,7 @@
       >
         <GeoJSON data={gj} generateId>
           <FillLayer
+            filter={["==", ["get", "kind"], kind]}
             paint={{
               "fill-color": "rgb(200, 100, 240)",
               "fill-outline-color": "rgb(200, 100, 240)",
@@ -101,13 +131,14 @@
             hoverCursor="pointer"
             on:click={onClick}
           >
-            <Popup let:features openOn="hover">
-              {#if features}
-                <p>{features[0].properties.LAD23NM}</p>
+            <Popup let:data openOn="hover">
+              {#if data}
+                <p>{data.properties?.name}</p>
               {/if}
             </Popup>
           </FillLayer>
           <LineLayer
+            filter={["==", ["get", "kind"], kind]}
             paint={{
               "line-color": "rgb(200, 100, 240)",
               "line-width": 2.5,
