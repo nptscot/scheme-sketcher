@@ -79,7 +79,7 @@
     <ErrorMessage {errorMessage} />
 
     <Radio
-      legend="Boundary type"
+      label="Boundary type"
       choices={[
         ["LAD", "Local Authority Districts"],
         ["REGION", "Regions"],
